@@ -1,5 +1,7 @@
 package classic;
 
+import java.util.EmptyStackException;
+
 public class Stack<E> {
 
     private int size;
@@ -9,10 +11,6 @@ public class Stack<E> {
     public Stack() {
         this.size = 0;
         this.elements = createElements(0);
-    }
-
-    private E[] createElements(int length) {
-        return (E[]) new Object[length];
     }
 
     public boolean isEmpty() {
@@ -31,6 +29,7 @@ public class Stack<E> {
         }
         initElements();
     }
+
     private void initElements() {
         E[] newElements = createElements(capacity+5);
         if (size >= 0) {
@@ -38,8 +37,21 @@ public class Stack<E> {
         }
         elements = newElements;
     }
-
     public E peek() {
         return elements[elements.length-1];
+    }
+
+    public E pop() {
+        if (isEmpty()) {
+            throw new EmptyStackException();
+        }
+        E element = elements[size - 1];
+        elements[size - 1] = null;
+        size--;
+        return element;
+    }
+
+    private E[] createElements(int length) {
+        return (E[]) new Object[length];
     }
 }

@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.EmptyStackException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -36,27 +39,27 @@ class StackTest {
             assertThat(stack.peek()).isEqualTo("C++");
         }
     }
-//
-//    @Nested
-//    @DisplayName("스택에서 요소 제거")
-//    class Pop {
-//
-//        @Test
-//        @DisplayName("스택에서 요소를 제거하면 그 요소가 반환됨")
-//        void popFromStack() {
-//            stack.push("Java");
-//            assertThat(stack.pop()).isEqualTo("Java");
-//            assertThat(stack.isEmpty()).isTrue();
-//        }
-//
-//        @Test
-//        @DisplayName("스택이 비어 있을 때 pop을 호출하면 예외 발생")
-//        void popFromEmptyStack() {
-//            assertThrows(EmptyStackException.class, () -> {
-//                stack.pop();
-//            });
-//        }
-//    }
+
+    @Nested
+    @DisplayName("스택에서 요소 제거")
+    class Pop {
+
+        @Test
+        @DisplayName("스택에서 요소를 제거하면 그 요소가 반환됨")
+        void popFromStack() {
+            stack.push("Java");
+            assertThat(stack.pop()).isEqualTo("Java");
+            assertThat(stack.isEmpty()).isTrue();
+        }
+
+        @Test
+        @DisplayName("스택이 비어 있을 때 pop을 호출하면 예외 발생")
+        void popFromEmptyStack() {
+            assertThrows(EmptyStackException.class, () -> {
+                stack.pop();
+            });
+        }
+    }
 //
 //    @Nested
 //    @DisplayName("스택 맨 위의 요소 확인")
