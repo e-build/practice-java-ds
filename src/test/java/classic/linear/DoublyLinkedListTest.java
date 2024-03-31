@@ -1,21 +1,23 @@
 package classic.linear;
 
 import classic.Foo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LinkedListTest {
+class DoublyLinkedListTest {
 
-    private final LinkedList<Foo> sut = new LinkedList<>();
+    private final DoublyLinkedList<Foo> sut = new DoublyLinkedList<>();
 
     @Nested
     @DisplayName("Given: 크기 확인")
-    class Conetxt0 {
+    class Context0 {
         @Test
         @DisplayName("Then: size()")
         void tc1() {
@@ -25,7 +27,7 @@ class LinkedListTest {
 
     @Nested
     @DisplayName("Given: 원소 검색")
-    class Conetxt1 {
+    class Context1 {
 
         @Test
         @DisplayName("Then: getFirst()")
@@ -62,7 +64,7 @@ class LinkedListTest {
 
     @Nested
     @DisplayName("Given: 원소 추가")
-    class Conetxt2 {
+    class Context2 {
 
         @Test
         @DisplayName("Then: addFirst()")
@@ -103,7 +105,7 @@ class LinkedListTest {
 
     @Nested
     @DisplayName("Given: 원소 제거")
-    class Conetxt3 {
+    class Context3 {
 
         @Test
         @DisplayName("Then: removeFirst()")
@@ -132,46 +134,122 @@ class LinkedListTest {
 
     @Nested
     @DisplayName("Given: Iterator 구현")
-    class Conetxt4 {
+    class Context4 {
+
+        private DoublyLinkedList<String> list;
+
+
+        @BeforeEach
+        void setup(){
+            list = new DoublyLinkedList<>();
+        }
 
         @Test
         @DisplayName("Then: iterator().hasNext() return true")
         void tc1() {
-            sut.addFirst(new Foo("foo1", 1));
-            sut.addFirst(new Foo("foo2", 2));
+            list.addFirst("foo1");
+            list.addFirst("foo2");
 
-            Iterator<Foo> iterator = sut.iterator();
+            ListIterator<String> sut = list.iterator();
 
-            assertThat(iterator.hasNext()).isTrue();
+            assertThat(sut.hasNext()).isTrue();
         }
 
         @Test
         @DisplayName("Then: iterator().hasNext() return false")
         void tc2() {
-            sut.addFirst(new Foo("foo1", 1));
-            sut.addFirst(new Foo("foo2", 2));
+            ListIterator<String> sut = list.iterator();
+            while (sut.hasNext()) {
+                sut.next();
+            }
 
-            Iterator<Foo> iterator = sut.iterator();
-            iterator.next();
-            iterator.next();
-
-            assertThat(iterator.hasNext()).isFalse();
+            assertThat(sut.hasNext()).isFalse();
         }
 
         @Test
         @DisplayName("Then: iterator().next()")
         void tc3() {
-            sut.addFirst(new Foo("foo1", 1));
-            sut.addFirst(new Foo("foo2", 2));
+            list.addFirst("foo1");
+            list.addFirst("foo2");
 
-            Iterator<Foo> iterator = sut.iterator();
-            Foo foo2 = iterator.next();
-            Foo foo1 = iterator.next();
+            ListIterator<String> sut = list.iterator();
 
-            assertThat(foo2.getName()).isEqualTo("foo2");
-            assertThat(foo2.getAge()).isEqualTo(2);
-            assertThat(foo1.getName()).isEqualTo("foo1");
-            assertThat(foo1.getAge()).isEqualTo(1);
+            assertThat(sut.next()).isEqualTo("foo2");
+            assertThat(sut.next()).isEqualTo("foo1");
+        }
+
+        @Test
+        @DisplayName("양방향 반복 테스트")
+        void tc4() {
+            list.addLast("A");
+            list.addLast("B");
+            list.addLast("C");
+
+            ListIterator<String> sut = list.iterator();
+
+            assertThat(sut.hasNext()).isTrue();
+            assertThat(sut.next()).isEqualTo("A");
+            assertThat(sut.hasNext()).isTrue();
+            assertThat(sut.next()).isEqualTo("B");
+            assertThat(sut.hasNext()).isTrue();
+            assertThat(sut.next()).isEqualTo("C");
+            assertThat(sut.hasNext()).isFalse();
+
+            assertThat(sut.hasPrevious()).isTrue();
+            assertThat(sut.previous()).isEqualTo("C");
+            assertThat(sut.hasPrevious()).isTrue();
+            assertThat(sut.previous()).isEqualTo("B");
+            assertThat(sut.hasPrevious()).isTrue();
+            assertThat(sut.previous()).isEqualTo("A");
+            assertThat(sut.hasPrevious()).isFalse();
+        }
+
+        @Test
+        @DisplayName("add()")
+        void testAddWithListIterator() {
+            ListIterator<String> sut = list.iterator();
+
+            sut.add("A");
+            sut.add("B");
+            sut.add("C");
+
+            assertThat(list.size()).isEqualTo(3);
+            assertThat(list.getFirst()).isEqualTo("A");
+            assertThat(list.getLast()).isEqualTo("C");
+        }
+
+        @Test
+        @DisplayName("remove()")
+        void testRemoveWithListIterator() {
+            list.addLast("A");
+            list.addLast("B");
+            list.addLast("C");
+
+            ListIterator<String> sut = list.iterator();
+
+            sut.next(); // "A"
+            sut.next(); // "B"
+            sut.remove(); // "B" 삭제
+
+            assertThat(list.size()).isEqualTo(2);
+            assertThat(list.getFirst()).isEqualTo("A");
+            assertThat(list.getLast()).isEqualTo("C");
+        }
+
+        @Test
+        @DisplayName("set()")
+        void testSetWithListIterator() {
+            list.addLast("A");
+            list.addLast("B");
+            list.addLast("C");
+
+            ListIterator<String> sut = list.iterator();
+
+            sut.next(); // "A"
+            sut.set("D"); // "A"를 "D"로 변경
+
+            assertThat(list.getFirst()).isEqualTo("D");
+            assertThat(sut.previous()).isEqualTo("D");
         }
     }
 
