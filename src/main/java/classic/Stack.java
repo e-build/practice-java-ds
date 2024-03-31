@@ -19,8 +19,8 @@ public class Stack<E> {
 
     public void push(E e){
         ensureCapacity();
-        elements[size -1] = e;
         size++;
+        elements[size - 1] = e;
     }
 
     private void ensureCapacity() {
@@ -38,7 +38,10 @@ public class Stack<E> {
         elements = newElements;
     }
     public E peek() {
-        return elements[elements.length-1];
+        if (isEmpty()) {
+            throw new EmptyStackException();
+        }
+        return elements[size-1];
     }
 
     public E pop() {
@@ -49,6 +52,10 @@ public class Stack<E> {
         elements[size - 1] = null;
         size--;
         return element;
+    }
+
+    public int size(){
+        return size;
     }
 
     private E[] createElements(int length) {

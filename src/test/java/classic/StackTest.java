@@ -60,27 +60,27 @@ class StackTest {
             });
         }
     }
-//
-//    @Nested
-//    @DisplayName("스택 맨 위의 요소 확인")
-//    class Peek {
-//
-//        @Test
-//        @DisplayName("peek을 호출하면 스택 맨 위의 요소가 반환되지만 스택에서는 제거되지 않음")
-//        void peekFromStack() {
-//            stack.push("Java");
-//            assertThat(stack.peek()).isEqualTo("Java");
-//            assertThat(stack.size()).isEqualTo(1);
-//        }
-//
-//        @Test
-//        @DisplayName("스택이 비어 있을 때 peek을 호출하면 예외 발생")
-//        void peekFromEmptyStack() {
-//            assertThrows(EmptyStackException.class, () -> {
-//                stack.peek();
-//            });
-//        }
-//    }
+
+    @Nested
+    @DisplayName("스택 맨 위의 요소 확인")
+    class Peek {
+
+        @Test
+        @DisplayName("peek을 호출하면 스택 맨 위의 요소가 반환되지만 스택에서는 제거되지 않음")
+        void peekFromStack() {
+            stack.push("Java");
+            assertThat(stack.peek()).isEqualTo("Java");
+            assertThat(stack.size()).isEqualTo(1);
+        }
+
+        @Test
+        @DisplayName("스택이 비어 있을 때 peek을 호출하면 예외 발생")
+        void peekFromEmptyStack() {
+            assertThrows(EmptyStackException.class, () -> {
+                stack.peek();
+            });
+        }
+    }
 //
 //    @Nested
 //    @DisplayName("스택이 비어 있는지 확인")
