@@ -81,40 +81,40 @@ class StackTest {
             });
         }
     }
-//
-//    @Nested
-//    @DisplayName("스택이 비어 있는지 확인")
-//    class IsEmpty {
-//
-//        @Test
-//        @DisplayName("새 스택은 비어 있음")
-//        void newStackIsEmpty() {
-//            assertThat(stack.isEmpty()).isTrue();
-//        }
-//
-//        @Test
-//        @DisplayName("요소를 추가한 후 스택은 비어 있지 않음")
-//        void stackIsNotEmptyAfterPush() {
-//            stack.push("Java");
-//            assertThat(stack.isEmpty()).isFalse();
-//        }
-//    }
-//
-//    @Nested
-//    @DisplayName("스택의 크기 확인")
-//    class Size {
-//
-//        @Test
-//        @DisplayName("새 스택의 크기는 0임")
-//        void newSizeIsZero() {
-//            assertThat(stack.size()).isEqualTo(0);
-//        }
-//
-//        @Test
-//        @DisplayName("요소를 추가하면 스택의 크기가 증가함")
-//        void sizeIncreasesOnPush() {
-//            stack.push("Java");
-//            assertThat(stack.size()).isEqualTo(1);
-//        }
-//    }
+
+    @Nested
+    @DisplayName("스택이 비어 있는지 확인")
+    class IsEmpty {
+
+        @Test
+        @DisplayName("새 스택은 비어 있음")
+        void newStackIsEmpty() {
+            assertThat(stack.isEmpty()).isTrue();
+        }
+
+        @Test
+        @DisplayName("요소를 추가한 후 스택은 비어 있지 않음")
+        void stackIsNotEmptyAfterPush() {
+            stack.push("Java");
+            assertThat(stack.isEmpty()).isFalse();
+        }
+    }
+
+    @Nested
+    @DisplayName("스택의 크기 확인")
+    class Size {
+
+        @Test
+        @DisplayName("새 스택의 크기는 0임")
+        void newSizeIsZero() {
+            assertThat(stack.size()).isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("요소를 추가하면 스택의 크기가 증가함")
+        void sizeIncreasesOnPush() {
+            stack.push("Java");
+            assertThat(stack.size()).isEqualTo(1);
+        }
+    }
 }
