@@ -27,14 +27,14 @@ class StackTest {
             assertThat(stack.isEmpty()).isFalse();
         }
 
-//        @Test
-//        @DisplayName("여러 요소를 추가하면 가장 마지막에 추가된 요소가 맨 위에 있음")
-//        void pushMultipleElements() {
-//            stack.push("Java");
-//            stack.push("Python");
-//            stack.push("C++");
-//            assertThat(stack.peek()).isEqualTo("C++");
-//        }
+        @Test
+        @DisplayName("여러 요소를 추가하면 가장 마지막에 추가된 요소가 맨 위에 있음")
+        void pushMultipleElements() {
+            stack.push("Java");
+            stack.push("Python");
+            stack.push("C++");
+            assertThat(stack.peek()).isEqualTo("C++");
+        }
     }
 //
 //    @Nested
