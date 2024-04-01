@@ -112,6 +112,7 @@ class BinarySearchTreeTest {
         }
 
         @Test
+        @DisplayName("Then: 자식이 하나인 노드 삭제")
         public void testDeleteNodeWithOneChild() {
             assertThat(bst.contains(30)).isTrue();
             bst.delete(30);
@@ -121,6 +122,7 @@ class BinarySearchTreeTest {
         }
 
         @Test
+        @DisplayName("Then: 자식이 두개인 노드 삭제")
         public void testDeleteNodeWithTwoChildren() {
             assertThat(bst.contains(10)).isTrue();
             bst.delete(10);

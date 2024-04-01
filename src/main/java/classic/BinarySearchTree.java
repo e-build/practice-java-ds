@@ -5,7 +5,7 @@ package classic;
 - 각 노드의 오른쪽 자식 노드는 노드의 값보다 커야 함.
 - 왼쪽 및 오른쪽 자식 노드 모두 이진 검색 트리여야 함.
  */
-public class BinarySearchTree<E extends Comparable> {
+public class BinarySearchTree<E extends Comparable<E>> {
 
     private Node<E> root;
     private int size;
@@ -64,60 +64,53 @@ public class BinarySearchTree<E extends Comparable> {
         return findRecursively(current.right, e);
     }
 
+    /*
+    이진 탐색 트리(Binary Search Tree, BST)에서 노드를 삭제할 때, 삭제한 노드를 대체하기 위한 규칙은 삭제하려는 노드의 자식 노드의 수에 따라 달라집니다. 크게 세 가지 경우를 고려해야 함.
+
+    1. 삭제하려는 노드가 자식 노드를 가지지 않는 경우 (잎 노드)
+        - 가장 간단한 경우. 해당 노드를 단순히 제거하고, 해당 노드의 부모 노드에서 이 노드로의 연결을 끊음
+    2. 삭제하려는 노드가 하나의 자식 노드만 가지는 경우
+        - 삭제하려는 노드를 제거하고, 삭제한 노드의 부모 노드와 삭제한 노드의 자식 노드를 직접 연결
+    3. 삭제하려는 노드가 두 개의 자식 노드를 가지는 경우
+        - 이 경우가 가장 복잡합니다. 삭제하려는 노드를 대체할 노드를 찾아야 하는데, 일반적으로 두 가지 방법 중 하나를 사용
+        - 후계자(successor) 찾기: 삭제하려는 노드의 오른쪽 서브트리에서 가장 작은 값을 가진 노드를 찾음. 이 노드를 후계자라고 하며, 이 노드는 삭제하려는 노드를 대체함. 후계자는 삭제하려는 노드보다 큰 값들 중 가장 작은 값이기 때문에, 이 위치로 이동해도 이진 탐색 트리의 조건을 만족
+        - 전임자(predecessor) 찾기: 삭제하려는 노드의 왼쪽 서브트리에서 가장 큰 값을 가진 노드를 찾음. 이 노드를 전임자라고 하며, 이 노드는 삭제하려는 노드를 대체함. 전임자는 삭제하려는 노드보다 작은 값들 중 가장 큰 값이기 때문에, 이 위치로 이동해도 이진 탐색 트리의 조건을 만족
+        - 후계자(또는 전임자)를 찾은 후, 이 노드를 삭제하려는 노드의 위치로 이동시키고, 원래 후계자(또는 전임자)의 위치에 있던 노드를 제거. 만약 후계자(또는 전임자)에게 자식 노드가 있다면, 이 자식 노드를 후계자(또는 전임자)의 원래 부모 노드와 연결해야 함. 이 과정은 이진 탐색 트리의 구조적인 특성을 유지하면서 노드를 안전하게 삭제할 수 있도록 해줌.
+     */
     public void delete(E e) {
-        if (root.value.equals(e)) {
-            root = nextNode(root, e);
-        }
-        reArchitecture(root, e);
-        size--;
+        root = deleteRecursively(root, e);
     }
 
-    private void reArchitecture(Node<E> parent, E e) {
-        if (parent.left.value.equals(e)) {
-            parent.left = nextNode(parent.left, e);
-            return;
-        }
-        if (parent.right.value.equals(e)) {
-            parent.right = nextNode(parent.right, e);
-            return;
-        }
-        final int compareTo = parent.value.compareTo(e);
-        if (compareTo > 0) {
-            reArchitecture(parent.left, e);
-            return;
-        }
-        reArchitecture(parent.right, e);
-    }
-
-    private Node<E> nextNode(Node<E> deleteTarget, E e) {
-        if (deleteTarget.left == null && deleteTarget.right == null) {
+    private Node<E> deleteRecursively(Node<E> current, E e) {
+        if (current == null) {
             return null;
         }
-        if (deleteTarget.left != null && deleteTarget.right == null) {
-            return deleteTarget.left;
+
+        final int compare = current.value.compareTo(e);
+        if (compare > 0) {
+            current.left = deleteRecursively(current.left, e);
+        } else if (compare < 0) {
+            current.right = deleteRecursively(current.right, e);
+        } else {
+            if (current.left != null && current.right != null) {
+                Node<E> successor = findMinValueFromRight(current.right);
+                current.value = successor.value;
+                current.right = deleteRecursively(current.right, successor.value);
+            } else {
+                current = (current.left != null) ? current.left : current.right;
+            }
         }
-        if (deleteTarget.left == null && deleteTarget.right != null) {
-            return deleteTarget.right;
-        }
-        Node<E> successor = findMinValueFromRight(deleteTarget.right);
-        successor.left = deleteTarget.left;
-        successor.right = deleteTarget.right;
-        return successor;
+        return current;
     }
 
-    private Node<E> findMinValueFromRight(Node<E> right) {
-        if (right.left == null) {
-            return right;
+    private Node<E> findMinValueFromRight(Node<E> node) {
+        Node<E> current = node;
+        while (current.left != null) {
+            current = current.left;
         }
-        Node<E> successorParent = right;
-        Node<E> minNode = right.left;
-        while (minNode.left != null) {
-            successorParent = minNode;
-            minNode = minNode.left;
-        }
-        successorParent.left = null;
-        return minNode;
+        return current;
     }
+
 
     private static class Node<E> {
         private E value;
