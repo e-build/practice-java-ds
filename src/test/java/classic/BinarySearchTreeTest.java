@@ -81,14 +81,57 @@ class BinarySearchTreeTest {
         void containsNotValue(int value) {
             assertThat(sut.contains(value)).isFalse();
         }
-
-//        @Test
-//        @DisplayName("And: 특정 값을 가진 노드를 삭제할 수 있어야 함")
-//        void canDeleteValue() {
-//            sut.delete(3);
-//            assertThat(sut.contains(3)).isFalse();
-//        }
     }
+
+
+    @Nested
+    @DisplayName("Given: 깊이가 5인 BST 에서")
+    class f {
+        private BinarySearchTree<Integer> bst;
+
+        @BeforeEach
+        void setUp() {
+            bst = new BinarySearchTree<>();
+            // 주어진 데이터로 트리 구성
+            int[] nodes = {15, 10, 25, 5, 12, 20, 30, 3, 7, 22, 35, 1};
+            for (int value : nodes) {
+                bst.add(value);
+            }
+        }
+
+        @Test
+        @DisplayName("Then: 리프 노드 삭제")
+        public void testDeleteLeafNode() {
+            assertThat(bst.contains(1)).isTrue();
+            bst.delete(1);
+            assertThat(bst.contains(1)).isFalse();
+
+            assertThat(bst.contains(7)).isTrue();
+            bst.delete(7);
+            assertThat(bst.contains(7)).isFalse();
+        }
+
+        @Test
+        public void testDeleteNodeWithOneChild() {
+            assertThat(bst.contains(30)).isTrue();
+            bst.delete(30);
+            assertThat(bst.contains(30)).isFalse();
+
+            assertThat(bst.contains(35)).isTrue();
+        }
+
+        @Test
+        public void testDeleteNodeWithTwoChildren() {
+            assertThat(bst.contains(10)).isTrue();
+            bst.delete(10);
+            assertThat(bst.contains(10)).isFalse();
+
+            assertThat(bst.contains(5)).isTrue();
+            assertThat(bst.contains(12)).isTrue();
+        }
+    }
+
+
 //
 //    @Nested
 //    @DisplayName("Given: 값이 중위 순회로 방문된 이진 검색 트리")

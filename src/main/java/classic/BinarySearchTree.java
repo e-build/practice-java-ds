@@ -31,7 +31,7 @@ public class BinarySearchTree<E extends Comparable> {
         int comparTo = current.value.compareTo(e);
         if (comparTo > 0) {
             current.left = addRecursively(current.left, e);
-        } else if (comparTo < 0){
+        } else if (comparTo < 0) {
             current.right = addRecursively(current.right, e);
         } else {
             return current;
@@ -64,6 +64,60 @@ public class BinarySearchTree<E extends Comparable> {
         return findRecursively(current.right, e);
     }
 
+    public void delete(E e) {
+        if (root.value.equals(e)) {
+            root = nextNode(root, e);
+        }
+        reArchitecture(root, e);
+        size--;
+    }
+
+    private void reArchitecture(Node<E> parent, E e) {
+        if (parent.left.value.equals(e)) {
+            parent.left = nextNode(parent.left, e);
+            return;
+        }
+        if (parent.right.value.equals(e)) {
+            parent.right = nextNode(parent.right, e);
+            return;
+        }
+        final int compareTo = parent.value.compareTo(e);
+        if (compareTo > 0) {
+            reArchitecture(parent.left, e);
+            return;
+        }
+        reArchitecture(parent.right, e);
+    }
+
+    private Node<E> nextNode(Node<E> deleteTarget, E e) {
+        if (deleteTarget.left == null && deleteTarget.right == null) {
+            return null;
+        }
+        if (deleteTarget.left != null && deleteTarget.right == null) {
+            return deleteTarget.left;
+        }
+        if (deleteTarget.left == null && deleteTarget.right != null) {
+            return deleteTarget.right;
+        }
+        Node<E> successor = findMinValueFromRight(deleteTarget.right);
+        successor.left = deleteTarget.left;
+        successor.right = deleteTarget.right;
+        return successor;
+    }
+
+    private Node<E> findMinValueFromRight(Node<E> right) {
+        if (right.left == null) {
+            return right;
+        }
+        Node<E> successorParent = right;
+        Node<E> minNode = right.left;
+        while (minNode.left != null) {
+            successorParent = minNode;
+            minNode = minNode.left;
+        }
+        successorParent.left = null;
+        return minNode;
+    }
 
     private static class Node<E> {
         private E value;
