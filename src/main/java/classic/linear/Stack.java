@@ -1,6 +1,7 @@
-package classic;
+package classic.linear;
 
 import java.util.EmptyStackException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /*
 # 배열을 사용한 스택 구현의 장단점
