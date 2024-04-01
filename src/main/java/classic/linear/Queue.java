@@ -37,10 +37,11 @@ public class Queue<E> {
     }
 
     private void shiftElements() {
-        if (outStack.isEmpty()) {
-            while (!inStack.isEmpty()) {
-                outStack.push(inStack.pop());
-            }
+        if (!outStack.isEmpty()) {
+            return;
+        }
+        while (!inStack.isEmpty()) {
+            outStack.push(inStack.pop());
         }
     }
 }
