@@ -39,6 +39,32 @@ public class BinarySearchTree<E extends Comparable> {
         return current;
     }
 
+    public boolean contains(E e) {
+        if (root == null) {
+            return false;
+        }
+        Node<E> node = findRecursively(root, e);
+        if (node == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private Node<E> findRecursively(Node<E> current, E e) {
+        if (current == null) {
+            return null;
+        }
+        if (current.value.equals(e)) {
+            return current;
+        }
+        int compareTo = current.value.compareTo(e);
+        if (compareTo > 0) {
+            return findRecursively(current.left, e);
+        }
+        return findRecursively(current.right, e);
+    }
+
+
     private static class Node<E> {
         private E value;
         private Node<E> left;

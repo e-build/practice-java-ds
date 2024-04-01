@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,14 +68,19 @@ class BinarySearchTreeTest {
             assertThat(sut.isEmpty()).isFalse();
         }
 
-//        @Test
-//        @DisplayName("And: 특정 값이 트리에 존재해야 함")
-//        void containsValue() {
-//            assertThat(sut.contains(3)).isTrue();
-//            assertThat(sut.contains(7)).isTrue();
-//            assertThat(sut.contains(5)).isTrue();
-//            assertThat(sut.contains(10)).isFalse();
-//        }
+        @ParameterizedTest
+        @ValueSource(ints = {3, 7, 5})
+        @DisplayName("And: 특정 값이 트리에 존재해야 함")
+        void containsValue(int value) {
+            assertThat(sut.contains(value)).isTrue();
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {4, 9, 10})
+        @DisplayName("And: 특정 값이 트리에 존재하지 않아야 함")
+        void containsNotValue(int value) {
+            assertThat(sut.contains(value)).isFalse();
+        }
 
 //        @Test
 //        @DisplayName("And: 특정 값을 가진 노드를 삭제할 수 있어야 함")
