@@ -168,6 +168,12 @@ public class BinarySearchTree<E extends Comparable<E>> {
         traversePreOrder(elements, self.right);
     }
 
+    /*
+    후위 순회는 왼쪽 및 오른쪽 서브트리를 먼저 방문하고, 마지막에 루트 노드를 방문. 후위 순회는 다음과 같은 경우에 유용
+    - 트리 해제 및 메모리 반환: 동적으로 할당된 트리의 메모리를 해제할 때 후위 순회를 사용할 수 있음. 모든 자식 노드들을 먼저 처리하고 마지막에 루트 노드를 처리하기 때문에, 메모리 해제 작업에 적합함.
+    - 표현식 트리 계산: 표현식 트리를 계산할 때 후위 순회를 사용하면, 연산자와 피연산자의 순서를 올바르게 계산할 수 있음. 예를 들어, 표현식 트리의 후위 순회 결과는 포스트픽스 표현(예: "A B +")을 제공함.
+    - 종속성 해결: 의존성이 있는 작업들을 처리할 때, 모든 종속 작업을 먼저 처리한 후에 해당 작업을 처리해야 하는 경우 후위 순회가 유용하게 사용됨.
+     */
     public List<E> traversePostOrder() {
         List<E> elements = new ArrayList<>();
         traversePostOrder(elements, root);
