@@ -1,5 +1,8 @@
 package classic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
 - 각 노드의 왼쪽 자식 노드는 노드의 값보다 작아야 함.
 - 각 노드의 오른쪽 자식 노드는 노드의 값보다 커야 함.
@@ -65,7 +68,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
     }
 
     /*
-    이진 탐색 트리(Binary Search Tree, BST)에서 노드를 삭제할 때, 삭제한 노드를 대체하기 위한 규칙은 삭제하려는 노드의 자식 노드의 수에 따라 달라집니다. 크게 세 가지 경우를 고려해야 함.
+    이진 탐색 트리(Binary Search Tree, BST)에서 노드를 삭제할 때, 삭제한 노드를 대체하기 위한 규칙은 삭제하려는 노드의 자식 노드의 수에 따라 달라짐. 크게 세 가지 경우를 고려해야 함.
 
     1. 삭제하려는 노드가 자식 노드를 가지지 않는 경우 (잎 노드)
         - 가장 간단한 경우. 해당 노드를 단순히 제거하고, 해당 노드의 부모 노드에서 이 노드로의 연결을 끊음
@@ -89,17 +92,26 @@ public class BinarySearchTree<E extends Comparable<E>> {
         final int compare = current.value.compareTo(e);
         if (compare > 0) {
             current.left = deleteRecursively(current.left, e);
-        } else if (compare < 0) {
-            current.right = deleteRecursively(current.right, e);
-        } else {
-            if (current.left != null && current.right != null) {
-                Node<E> successor = findMinValueFromRight(current.right);
-                current.value = successor.value;
-                current.right = deleteRecursively(current.right, successor.value);
-            } else {
-                current = (current.left != null) ? current.left : current.right;
-            }
+            return current;
         }
+        if (compare < 0) {
+            current.right = deleteRecursively(current.right, e);
+            return current;
+        }
+
+        /*
+            삭제 대상 노드
+         */
+        // 자식이 두 개
+        if (current.left != null && current.right != null) {
+            Node<E> successor = findMinValueFromRight(current.right);
+            current.value = successor.value;
+            current.right = deleteRecursively(current.right, successor.value);
+            return current;
+        }
+
+        // 자식이 한 개 or 없음
+        current = (current.left != null) ? current.left : current.right;
         return current;
     }
 
@@ -111,6 +123,69 @@ public class BinarySearchTree<E extends Comparable<E>> {
         return current;
     }
 
+
+    public List<E> traverseInOrder() {
+        List<E> elements = new ArrayList<>();
+        traverseInOrder(elements, root);
+        return elements;
+    }
+
+    private void traverseInOrder(
+        List<E> elements,
+        Node<E> self
+    ) {
+        if (self == null) {
+            return;
+        }
+
+        traverseInOrder(elements, self.left);
+        elements.add(self.value);
+        traverseInOrder(elements, self.right);
+    }
+
+    /*
+    전위 순회는 루트 노드를 먼저 방문하고, 그 다음 왼쪽 및 오른쪽 서브트리를 순회. 이 방식은 다음과 같은 경우에 유용
+    - 트리 복사: 전위 순회를 사용하여 트리의 모든 노드를 방문하고 복사할 수 있음. 이 방법으로 생성된 복사본은 원본 트리의 구조를 그대로 유지
+    - 표현식 트리: 컴퓨터 과학에서 표현식을 파싱하고 계산할 때 사용되는 트리 구조를 순회하는 데 전위 순회가 사용될 수 있음. 예를 들어, 표현식 트리의 전위 순회 결과는 프리픽스 표현(예: "+ A B")을 제공
+    - 트리 검색 및 구조 정보: 전위 순회는 트리의 구조적 정보를 검색하거나 출력하는 데 유용하게 사용될 수 있음. 트리의 구조를 이해하거나 디버깅할 때 유용
+     */
+    public List<E> traversePreOrder() {
+        List<E> elements = new ArrayList<>();
+        traversePreOrder(elements, root);
+        return elements;
+    }
+
+    private void traversePreOrder(
+        List<E> elements,
+        Node<E> self
+    ) {
+        if (self == null) {
+            return;
+        }
+
+        elements.add(self.value);
+        traversePreOrder(elements, self.left);
+        traversePreOrder(elements, self.right);
+    }
+
+    public List<E> traversePostOrder() {
+        List<E> elements = new ArrayList<>();
+        traversePostOrder(elements, root);
+        return elements;
+    }
+
+    private void traversePostOrder(
+        List<E> elements,
+        Node<E> self
+    ) {
+        if (self == null) {
+            return;
+        }
+
+        traversePostOrder(elements, self.left);
+        traversePostOrder(elements, self.right);
+        elements.add(self.value);
+    }
 
     private static class Node<E> {
         private E value;

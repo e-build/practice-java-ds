@@ -134,24 +134,44 @@ class BinarySearchTreeTest {
     }
 
 
-//
-//    @Nested
-//    @DisplayName("Given: 값이 중위 순회로 방문된 이진 검색 트리")
-//    class WhenTraversedInOrder {
-//
-//        @BeforeEach
-//        void setup() {
-//            sut.add(5);
-//            sut.add(3);
-//            sut.add(7);
-//            sut.add(2);
-//            sut.add(4);
-//        }
-//
-//        @Test
-//        @DisplayName("Then: 순회 결과는 정렬된 순서로 반환되어야 함")
-//        void traverseInOrder() {
-//            assertThat(sut.traverseInOrder()).containsExactly(2, 3, 4, 5, 7);
-//        }
-//    }
+    @Nested
+    @DisplayName("Given: 순회한다면")
+    class WhenTraversedInOrder {
+
+        @BeforeEach
+        void setup() {
+            sut.add(5);
+            sut.add(3);
+            sut.add(7);
+            sut.add(2);
+            sut.add(4);
+        }
+        /*
+        5
+    3       7
+2      4
+         */
+
+        @Test
+        @DisplayName("Then: 중위 순회 결과는 정렬된 순서로 반환되어야 함")
+        void traverseInOrder() {
+            assertThat(sut.traverseInOrder()).containsExactly(2, 3, 4, 5, 7);
+        }
+
+        @Test
+        @DisplayName("Then: 전위 순회 결과는 루트부터 시작해야 함")
+        void traversePreOrder() {
+            assertThat(sut.traversePreOrder()).containsExactly(5, 3, 2, 4, 7);
+        }
+
+        @Test
+        @DisplayName("Then: 후위 순회 결과는 루트가 마지막이어야 함")
+        void traversePostOrder() {
+            assertThat(sut.traversePostOrder()).containsExactly(2, 4, 3, 7, 5);
+        }
+
+    }
+
+
+
 }
