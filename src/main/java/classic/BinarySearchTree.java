@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-- 각 노드의 왼쪽 자식 노드는 노드의 값보다 작아야 함.
-- 각 노드의 오른쪽 자식 노드는 노드의 값보다 커야 함.
+- 각 노드의 왼쪽 자식 노드는 부모 노드의 값보다 작아야 함.
+- 각 노드의 오른쪽 자식 노드는 부모 노드의 값보다 커야 함.
 - 왼쪽 및 오른쪽 자식 노드 모두 이진 검색 트리여야 함.
  */
 public class BinarySearchTree<E extends Comparable<E>> {
@@ -180,7 +180,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
         return elements;
     }
 
-    private void traversePostOrder(
+    private void traversePostOrder( 
         List<E> elements,
         Node<E> self
     ) {
